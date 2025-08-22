@@ -1,21 +1,47 @@
 # ☕ Dockerized Java Runtimes
 
-This repository provides prebuilt Docker images for multiple Java distributions and versions.  
-All images are automatically built and published to the [GitHub Container Registry (GHCR)](https://ghcr.io).
+> 🚀 Prebuilt, lightweight, and secure Docker images for multiple Java distributions and versions  
+> 📦 Auto-built & published to [GitHub Container Registry (GHCR)](https://ghcr.io)  
+> 🔐 Official images, built with best practices ✅
+
+This repository automates the generation and maintenance of Docker images for popular OpenJDK implementations across Java 8, 11, 17, and 21.
+
+---
 
 ## 📦 Available Distributions & Versions
 
-The following Java distributions and versions are available:
+| Distribution | Java Versions | Base Image | 🏷️ Tags |
+|-------------|---------------|------------|--------|
+| 🏷️ [Adoptium (Eclipse Temurin)](https://adoptium.net) | 8, 11, 17, 21 | `eclipse-temurin` | `ghcr.io/your-org/adoptium:8-jdk`, etc. |
+| 🔵 [Zulu (Azul)](https://www.azul.com) | 8, 11, 17, 21 | `azul/zulu-openjdk` | `ghcr.io/your-org/zulu:11-jdk`, etc. |
+| 🟨 [Amazon Corretto](https://aws.amazon.com/corretto/) | 8, 11, 17, 21 | `amazoncorretto` | `ghcr.io/your-org/corretto:17-jdk`, etc. |
+| 🌿 [Liberica (BellSoft)](https://bell-sw.com) | 8, 11, 17, 21 | `bellsoft/liberica-openjdk-alpine` | `ghcr.io/your-org/liberica:21-jdk`, etc. |
 
-- **Adoptium (Temurin)**: `8`, `11`, `17`, `21`
-- **Zulu (Azul)**: `8`, `11`, `17`, `21`
-- **Amazon Corretto**: `8`, `11`, `17`, `21`
-- **Liberica (BellSoft)**: `8`, `11`, `17`, `21`
+> 💡 **All images are built using official upstream images and are tagged consistently.**
 
-Each distribution/version has its own Dockerfile inside the repository:
+---
+
+## 📁 Repository Structure
+
+```bash
 Dockers/
-├─ adoptium/8/Dockerfile
-├─ adoptium/11/Dockerfile
-├─ adoptium/17/Dockerfile
-├─ adoptium/21/Dockerfile
-├─ zulu/8/Dockerfile
+├── adoptium/
+│   ├── 8/Dockerfile
+│   ├── 11/Dockerfile
+│   ├── 17/Dockerfile
+│   └── 21/Dockerfile
+├── zulu/
+│   ├── 8/Dockerfile
+│   ├── 11/Dockerfile
+│   ├── 17/Dockerfile
+│   └── 21/Dockerfile
+├── corretto/
+│   ├── 8/Dockerfile
+│   ├── 11/Dockerfile
+│   ├── 17/Dockerfile
+│   └── 21/Dockerfile
+└── liberica/
+    ├── 8/Dockerfile
+    ├── 11/Dockerfile
+    ├── 17/Dockerfile
+    └── 21/Dockerfile

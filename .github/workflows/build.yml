@@ -1,4 +1,4 @@
-name: Build all Java Docker images
+name: Build and Push All Java Docker Images
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         ]
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Log in to GitHub Container Registry
@@ -29,10 +29,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set image variables
+        run: |
+          echo "IMAGE_TAG=ghcr.io/whitefreezing/java:${{ matrix.java_folder//\//- }}" >> $GITHUB_ENV
+          
+          # Optionálne nastavenie latest pre najvyššiu verziu každej distribúcie
+          distro="${{ matrix.java_folder%%/* }}"
+          version="${{ matrix.java_folder##*/ }}"
+          if [[ "$version" == "21" ]]; then
+            echo "LATEST_TAG=ghcr.io/whitefreezing/java:${distro}-latest" >> $GITHUB_ENV
+          else
+            echo "LATEST_TAG=" >> $GITHUB_ENV
+          fi
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: ${{ matrix.java_folder }}
           push: true
-          tags: |
-            ghcr.io/whitefreezing/java:${{ matrix.java_folder//\//- }}
+          tags: ${{ env.IMAGE_TAG }}${{ env.LATEST_TAG && ',' + env.LATEST_TAG || '' }}
