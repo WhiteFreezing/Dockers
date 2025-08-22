@@ -1,25 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-# ============================================================================
-# Enhanced Docker Container Startup Script
-# Features:
-# - Comprehensive system diagnostics
-# - Environment validation
-# - Interactive startup (if terminal detected)
-# - Better error handling
-# - Enhanced logging
-# - Resource monitoring
-# ============================================================================
-
-# Constants
 readonly SCRIPT_VERSION="2.1.0"
 readonly LOG_FILE="/var/log/container-startup.log"
 readonly MAX_LOG_SIZE=$((10 * 1024 * 1024)) # 10MB
 readonly MIN_DISK_SPACE=$((5 * 1024 * 1024)) # 5GB in KB
 readonly MIN_MEMORY=$((512 * 1024)) # 512MB in KB
 
-# Colors for output
 declare -A COLORS=(
   ["RESET"]='\033[0m' ["BOLD"]='\033[1m' ["DIM"]='\033[2m'
   ["RED"]='\033[0;31m' ["GREEN"]='\033[0;32m' ["YELLOW"]='\033[1;33m'
@@ -28,18 +15,12 @@ declare -A COLORS=(
   ["BG_RED"]='\033[41m' ["BG_GREEN"]='\033[42m' ["BG_YELLOW"]='\033[43m'
 )
 
-# Global variables
 declare -A SYSTEM_INFO JAVA_INFO NETWORK_INFO CONTAINER_INFO
 declare -a STARTUP_WARNINGS STARTUP_ERRORS
 declare STARTUP_COMMAND=""
 declare IS_TTY=false
 declare VERBOSE_MODE=false
 
-# ============================================================================
-# Core Functions
-# ============================================================================
-
-# Initialize logging system
 setup_logging() {
   local log_dir=$(dirname "$LOG_FILE")
 
@@ -58,7 +39,6 @@ setup_logging() {
     }
   fi
 
-  # Write header to new log
   {
     echo "============================================================="
     echo " Container Startup Log - $(date)"
@@ -67,30 +47,25 @@ setup_logging() {
   } > "$LOG_FILE"
 }
 
-# Check if we're running in a terminal
 check_tty() {
   if [[ -t 1 ]]; then
     IS_TTY=true
-    # Enable more verbose output when running interactively
     VERBOSE_MODE=true
   fi
 }
 
-# Enhanced spinner with status tracking
 spinner() {
   local pid=\$1
   local message="\$2"
   local delay=0.1
   local spin_str='??????????'
 
-  # Don't show spinner if not in TTY or verbose mode
   if [[ "$IS_TTY" != true || "$VERBOSE_MODE" != true ]]; then
     echo -n "[$message] "
     wait "$pid" >/dev/null 2>&1
     return $?
   fi
 
-  # Display spinning animation while process runs
   while kill -0 "$pid" 2>/dev/null; do
     local temp=${spin_str#?}
     printf " [%c] %s" "$spin_str" "$message"
@@ -99,11 +74,9 @@ spinner() {
     printf "\r"
   done
 
-  # Get exit status of the process
   wait "$pid"
   local status=$?
 
-  # Clear the spinner line
   printf "\r"
 
   if [[ $status -eq 0 ]]; then
@@ -115,7 +88,6 @@ spinner() {
   return $status
 }
 
-# Progress bar function
 progress_bar() {
   local progress=\$1
   local width=${2:-40}
@@ -134,7 +106,6 @@ progress_bar() {
   printf "] %d%%" "$progress"
 }
 
-# Log messages with timestamps and colors
 log_message() {
   local level=\$1
   local message=\$2
@@ -142,43 +113,32 @@ log_message() {
   local color="${COLORS[$level]}"
   local log_entry="[$timestamp] [$level] $message"
 
-  # Print to console with color if TTY
   if [[ "$IS_TTY" == true ]]; then
     echo -e "${color}${log_entry}${COLORS[RESET]}"
   else
     echo -e "$log_entry"
   fi
 
-  # Always write to log file without colors
   echo -e "[$timestamp] [$level] ${message//${COLORS[@]}/}" >> "$LOG_FILE"
 }
 
-# ============================================================================
-# System Information Gathering
-# ============================================================================
-
 get_system_info() {
-  # Memory information
   SYSTEM_INFO[mem_total]=$(awk '/MemTotal:/ {print int(\$2/1024)}' /proc/meminfo 2>/dev/null || echo 0)
   SYSTEM_INFO[mem_avail]=$(awk '/MemAvailable:/ {print int(\$2/1024)}' /proc/meminfo 2>/dev/null || echo 0)
   SYSTEM_INFO[mem_used]$((SYSTEM_INFO[mem_total] - SYSTEM_INFO[mem_avail]))
   SYSTEM_INFO[mem_pct]$((SYSTEM_INFO[mem_used] * 100 / SYSTEM_INFO[mem_total]))
 
-  # CPU information
   SYSTEM_INFO[cpu_cores]=$(nproc 2>/dev/null || echo 0)
   SYSTEM_INFO[cpu_model]=$(grep -m1 'model name' /proc/cpuinfo 2>/dev/null | cut -d':' -f2 | xargs || echo "Unknown")
   SYSTEM_INFO[load_avg]=$(uptime 2>/dev/null | awk -F'load average:' '{print \$2}' | cut -d',' -f1 | xargs || echo 0)
 
-  # Disk information
   SYSTEM_INFO[disk_total]=$(df -k / 2>/dev/null | awk 'NR==2 {print \$2}' || echo 0)
   SYSTEM_INFO[disk_used]=$(df -k / 2>/dev/null | awk 'NR==2 {print \$3}' || echo 0)
   SYSTEM_INFO[disk_avail]=$(df -k / 2>/dev/null | awk 'NR==2 {print \$4}' || echo 0)
   SYSTEM_INFO[disk_pct]=$(df / 2>/dev/null | awk 'NR==2 {print substr(\$5,1,length(\$5)-1)}' || echo 0)
 
-  # System uptime
   SYSTEM_INFO[uptime]=$(uptime -p 2>/dev/null | sed 's/up //' || echo "Unknown")
 
-  # Kernel version
   SYSTEM_INFO[kernel]=$(uname -r 2>/dev/null || echo "Unknown")
 }
 
@@ -188,7 +148,6 @@ get_java_info() {
     JAVA_INFO[vendor]=$(java -version 2>&1 | grep -iE "openjdk|oracle|azul" | head -n1 || echo "Unknown")
     JAVA_INFO[home]=$(dirname $(dirname $(readlink -f $(which java) 2>/dev/null)) 2>/dev/null || echo "Unknown")
 
-    # Check Java version compatibility
     if [[ "${JAVA_INFO[version]}" =~ ^1\.[6-8]\. ]]; then
       STARTUP_WARNINGS+=("Java version ${JAVA_INFO[version]} is outdated and may have security vulnerabilities")
     fi
@@ -204,10 +163,8 @@ get_network_info() {
   NETWORK_INFO[hostname]=$(hostname 2>/dev/null || echo "Unknown")
   NETWORK_INFO[internal_ip]=$(ip route get 1 2>/dev/null | awk '{print $(NF-2);exit}' || echo "Unknown")
 
-  # Try to get external IP if possible (might not work in all container environments)
   NETWORK_INFO[external_ip]=$(curl -s --max-time 2 ifconfig.me 2>/dev/null || echo "Unknown")
 
-  # Get all network interfaces
   local ifaces=$(ip -o link show 2>/dev/null | awk -F': ' '{print \$2}')
   local iface_info=""
   for iface in $ifaces; do
@@ -220,7 +177,6 @@ get_network_info() {
 }
 
 get_container_info() {
-  # Check if we're in a container
   if [[ -f /.dockerenv || -f /.dockerinit ]]; then
     CONTAINER_INFO[type]="Docker"
     CONTAINER_INFO[id]=$(cat /proc/self/cgroup 2>/dev/null | grep -oP 'docker-.{12}' | head -n1 || echo "Unknown")
@@ -235,15 +191,10 @@ get_container_info() {
   CONTAINER_INFO[name]=$(hostname 2>/dev/null || echo "Unknown")
 }
 
-# ============================================================================
-# Validation Functions
-# ============================================================================
-
 validate_system() {
   local errors=0
   local warnings=0
 
-  # Check critical directories
   for dir in /home/container /tmp /var/log; do
     if [[ ! -d "$dir" ]]; then
       STARTUP_ERRORS+=("Missing critical directory: $dir")
@@ -251,7 +202,6 @@ validate_system() {
     fi
   done
 
-  # Check disk space
   if [[ ${SYSTEM_INFO[disk_pct]} -gt 95 ]]; then
     STARTUP_ERRORS+=("Critical disk space usage: ${SYSTEM_INFO[disk_pct]}% used")
     ((errors++))
@@ -260,7 +210,6 @@ validate_system() {
     ((warnings++))
   fi
 
-  # Check available disk space in KB
   if [[ ${SYSTEM_INFO[disk_avail]} -lt $MIN_DISK_SPACE ]]; then
     local required=$((MIN_DISK_SPACE / 1024 / 1024))
     local available=$((SYSTEM_INFO[disk_avail] / 1024 / 1024))
@@ -268,7 +217,6 @@ validate_system() {
     ((errors++))
   fi
 
-  # Check memory
   if [[ ${SYSTEM_INFO[mem_pct]} -gt 95 ]]; then
     STARTUP_ERRORS+=("Critical memory usage: ${SYSTEM_INFO[mem_pct]}% used (${SYSTEM_INFO[mem_used]}MB/${SYSTEM_INFO[mem_total]}MB)")
     ((errors++))
@@ -277,14 +225,12 @@ validate_system() {
     ((warnings++))
   fi
 
-  # Check minimum memory requirement
   if [[ ${SYSTEM_INFO[mem_total]} -lt $MIN_MEMORY ]]; then
     local required=$((MIN_MEMORY / 1024))
     STARTUP_ERRORS+=("Insufficient total memory: ${SYSTEM_INFO[mem_total]}MB available, ${required}MB recommended")
     ((errors++))
   fi
 
-  # Check CPU load
   local load_threshold=$((SYSTEM_INFO[cpu_cores] * 2))
   local current_load=$(echo "${SYSTEM_INFO[load_avg]}" | cut -d'.' -f1)
 
@@ -297,7 +243,6 @@ validate_system() {
 }
 
 validate_environment() {
-  # Check for required environment variables
   local required_vars=("JAVA_HOME" "PATH" "HOME")
   local missing_vars=()
 
@@ -311,7 +256,6 @@ validate_environment() {
     STARTUP_WARNINGS+=("Missing environment variables: ${missing_vars[*]}")
   fi
 
-  # Check if we have a startup command
   if [[ -z "${STARTUP:-}" ]]; then
     STARTUP_ERRORS+=("No STARTUP command defined")
     return 1
@@ -319,10 +263,6 @@ validate_environment() {
 
   return 0
 }
-
-# ============================================================================
-# Display Functions
-# ============================================================================
 
 display_header() {
   local width=60
@@ -381,7 +321,6 @@ display_health_status() {
   local total_issues=$(( ${#STARTUP_ERRORS[@]} + ${#STARTUP_WARNINGS[@]} ))
   local health_score=100
 
-  # Calculate health score (errors weight more than warnings)
   for error in "${STARTUP_ERRORS[@]}"; do
     health_score=$((health_score - 15))
   done
@@ -449,18 +388,12 @@ display_startup_info() {
   done
 }
 
-# ============================================================================
-# Main Execution
-# ============================================================================
-
 main() {
-  # Initial setup
   setup_logging
   check_tty
 
   log_message "INFO" "Starting container initialization (v$SCRIPT_VERSION)"
 
-  # Gather system information
   log_message "INFO" "Collecting system information..."
   get_system_info &
   local sys_pid=$!
@@ -478,7 +411,6 @@ main() {
   local cont_pid=$!
   spinner $cont_pid "Detecting container environment"
 
-  # Validate environment
   log_message "INFO" "Validating system environment..."
   if ! validate_environment; then
     log_message "ERROR" "Environment validation failed"
@@ -488,7 +420,6 @@ main() {
     log_message "ERROR" "System validation failed"
   fi
 
-  # Display startup information
   if [[ "$VERBOSE_MODE" == true ]]; then
     clear
     display_header
@@ -505,7 +436,6 @@ main() {
     log_message "INFO" "Java: ${JAVA_INFO[version]} (${JAVA_INFO[vendor]})"
   fi
 
-  # Check if we should proceed with startup
   if [[ ${#STARTUP_ERRORS[@]} -gt 0 ]]; then
     log_message "ERROR" "Critical errors detected during startup validation"
 
@@ -517,7 +447,6 @@ main() {
     exit 1
   fi
 
-  # Log all collected information
   {
     echo -e "\n=== System Information ==="
     for key in "${!SYSTEM_INFO[@]}"; do
@@ -563,7 +492,6 @@ main() {
     fi
   } >> "$LOG_FILE"
 
-  # Start the application
   log_message "INFO" "Launching application server..."
   log_message "INFO" "Startup command: $STARTUP_COMMAND"
 
@@ -574,7 +502,6 @@ main() {
     log_message "INFO" "Executing startup command..."
   fi
 
-  # Execute the startup command
   if [[ -n "$STARTUP_COMMAND" ]]; then
     # Run in current shell to preserve environment and handle signals properly
     exec $STARTUP_COMMAND
@@ -585,5 +512,4 @@ main() {
   fi
 }
 
-# Execute main function
 main "$@"
