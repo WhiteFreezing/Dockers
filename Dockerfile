@@ -1,15 +1,40 @@
-FROM eclipse-temurin:24-jdk
+FROM        azul/zulu-openjdk:21
 
-LABEL maintainer="whitefreezing@gmail.com"
-LABEL org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
+LABEL       author="krcnpeter" maintainer="whitefreezing@gmail.com"
+LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
+LABEL       org.opencontainers.image.licenses="MIT"
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl wget unzip git \
-    && rm -rf /var/lib/apt/lists/*
+ENV         DEBIAN_FRONTEND=noninteractive
 
-WORKDIR /home/container
+RUN         apt-get update \
+            && apt-get -y install --no-install-recommends \
+               curl \
+               ffmpeg \
+               iproute2 \
+               git \
+               sqlite3 \
+               python3 \
+               tzdata \
+               ca-certificates \
+               dnsutils \
+               fontconfig \
+               libfreetype6 \
+               libstdc++6 \
+               lsof \
+               build-essential \
+               locales \
+            && apt-get clean \
+            && rm -rf /var/lib/apt/lists/* \
+            && useradd -m -d /home/container container \
+            && locale-gen en_US.UTF-8
 
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+ENV         LC_ALL=en_US.UTF-8
+ENV         LANG=en_US.UTF-8
+ENV         LANGUAGE=en_US.UTF-8
 
-CMD ["/entrypoint.sh"]
+USER        container
+ENV         USER=container HOME=/home/container
+WORKDIR     /home/container
+
+COPY        ./entrypoint.sh /entrypoint.sh
+CMD         [ "/bin/bash", "/entrypoint.sh" ]
