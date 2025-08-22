@@ -1,0 +1,38 @@
+name: Build all Java Docker images
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java_folder: [
+          adoptium/8, adoptium/11, adoptium/17, adoptium/21,
+          zulu/8, zulu/11, zulu/17, zulu/21,
+          corretto/8, corretto/11, corretto/17, corretto/21,
+          temurin/8, temurin/11, temurin/17, temurin/21,
+          liberica/8, liberica/11, liberica/17, liberica/21
+        ]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ${{ matrix.java_folder }}
+          push: true
+          tags: ghcr.io/WhiteFreezing/${{ matrix.java_folder }}:latest
+
