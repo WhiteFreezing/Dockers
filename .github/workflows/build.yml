@@ -34,5 +34,5 @@ jobs:
         with:
           context: ${{ matrix.java_folder }}
           push: true
-          tags: ghcr.io/WhiteFreezing/${{ matrix.java_folder }}:latest
-
+          tags: |
+            ghcr.io/whitefreezing/java:${{ matrix.java_folder//\//- }}
