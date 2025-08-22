@@ -1,0 +1,30 @@
+# OS / system files
+.DS_Store
+Thumbs.db
+
+# Bash / shell config files
+.bashrc
+.bash_logout
+.profile
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node / npm
+node_modules/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+
+# Docker build files
+*.tar
+*.tgz
+
+# Secrets (never commit)
+.env
