@@ -11,11 +11,19 @@ jobs:
     strategy:
       matrix:
         java_folder: [
-          adoptium/8, adoptium/11, adoptium/17, adoptium/21,
-          zulu/8, zulu/11, zulu/17, zulu/21,
-          corretto/8, corretto/11, corretto/17, corretto/21,
-          temurin/8, temurin/11, temurin/17, temurin/21,
-          liberica/8, liberica/11, liberica/17, liberica/21
+          adoptium/8, adoptium/11, adoptium/17, adoptium/21, adoptium/22, adoptium/23, adoptium/24,
+          zulu/8, zulu/11, zulu/17, zulu/21, zulu/22, zulu/23, zulu/24,
+          corretto/8, corretto/11, corretto/17, corretto/21, corretto/22, corretto/23, corretto/24,
+          temurin/8, temurin/11, temurin/17, temurin/21, temurin/22, temurin/23, temurin/24,
+          liberica/8, liberica/11, liberica/17, liberica/21, liberica/22, liberica/23, liberica/24,
+          graalvm/8, graalvm/11, graalvm/17, graalvm/21, graalvm/22, graalvm/23, graalvm/24,
+          sapmachine/8, sapmachine/11, sapmachine/17, sapmachine/21, sapmachine/22, sapmachine/23, sapmachine/24,
+          dragonwell/8, dragonwell/11, dragonwell/17, dragonwell/21, dragonwell/22, dragonwell/23, dragonwell/24,
+          bellsoft/8, bellsoft/11, bellsoft/17, bellsoft/21, bellsoft/22, bellsoft/23, bellsoft/24,
+          graalce/8, graalce/11, graalce/17, graalce/21, graalce/22, graalce/23, graalce/24,
+          graaljdk/8, graaljdk/11, graaljdk/17, graaljdk/21, graaljdk/22, graaljdk/23, graaljdk/24,
+          openj9_21-rocky/8, openj9_21-rocky/11, openj9_21-rocky/17, openj9_21-rocky/21, openj9_21-rocky/22, openj9_21-rocky/23, openj9_21-rocky/24,
+          shipilev/24-rocky/8, shipilev/24-rocky/11, shipilev/24-rocky/17, shipilev/24-rocky/21, shipilev/24-rocky/22, shipilev/24-rocky/23, shipilev/24-rocky/24
         ]
 
     steps:
@@ -29,15 +37,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Set image variables
+      - name: Set image tags
         run: |
-          echo "IMAGE_TAG=ghcr.io/whitefreezing/java:${{ matrix.java_folder//\//- }}" >> $GITHUB_ENV
-          
-          # Optionálne nastavenie latest pre najvyššiu verziu každej distribúcie
           distro="${{ matrix.java_folder%%/* }}"
           version="${{ matrix.java_folder##*/ }}"
-          if [[ "$version" == "21" ]]; then
-            echo "LATEST_TAG=ghcr.io/whitefreezing/java:${distro}-latest" >> $GITHUB_ENV
+
+          IMAGE_TAG="ghcr.io/whitefreezing/java:${distro}-${version}"
+          echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+
+          if [[ "$version" == "24" ]]; then
+            LATEST_TAG="ghcr.io/whitefreezing/java:${distro}-latest"
+            echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
           else
             echo "LATEST_TAG=" >> $GITHUB_ENV
           fi
@@ -47,4 +57,4 @@ jobs:
         with:
           context: ${{ matrix.java_folder }}
           push: true
-          tags: ${{ env.IMAGE_TAG }}${{ env.LATEST_TAG && ',' + env.LATEST_TAG || '' }}
+          tags: ${{ env.IMAGE_TAG }}${{ env.LATEST_TAG != '' && ',' + env.LATEST_TAG || '' }}
