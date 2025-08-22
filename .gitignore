@@ -6,6 +6,7 @@ Thumbs.db
 .bashrc
 .bash_logout
 .profile
+dockerfiles.sh
 
 # Python cache
 __pycache__/
