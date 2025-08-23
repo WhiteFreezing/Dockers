@@ -8,6 +8,15 @@ Thumbs.db
 .profile
 dockerfiles.sh
 build.sh
+.config
+.java
+.local
+.profile
+.zprofile
+.zshrc
+.face
+.face.icon
+get-docker.sh
 
 # Python cache
 __pycache__/
