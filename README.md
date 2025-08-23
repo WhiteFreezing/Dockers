@@ -10,20 +10,20 @@ This repository automates the generation and maintenance of Docker images for po
 
 ## 📦 Available Distributions & Versions
 
-| Distribution | Java Versions | Base Image | 🏷️ Tags |
-|-------------|---------------|------------|--------|
-| 🏷️ [Adoptium (Eclipse Temurin)](https://adoptium.net) | 8–24 | `eclipse-temurin` | `ghcr.io/whitefreezing/java:adoptium-8`, etc. |
-| 🔵 [Zulu (Azul)](https://www.azul.com) | 8–24 | `azul/zulu-openjdk` | `ghcr.io/whitefreezing/java:zulu-11`, etc. |
-| 🟨 [Amazon Corretto](https://aws.amazon.com/corretto/) | 8–24 | `amazoncorretto` | `ghcr.io/whitefreezing/java:corretto-17`, etc. |
-| 🌿 [Liberica (BellSoft)](https://bell-sw.com) | 8–24 | `bellsoft/liberica-openjdk-alpine` | `ghcr.io/whitefreezing/java:liberica-21`, etc. |
-| 🟪 [GraalVM](https://www.graalvm.org/) | 8–24 | `ghcr.io/graalvm/graalvm-ce` | `ghcr.io/whitefreezing/java:graalvm-21`, etc. |
-| 🟥 [SAPMachine](https://sap.github.io/SapMachine/) | 8–24 | `sapmachine` | `ghcr.io/whitefreezing/java:sapmachine-21`, etc. |
-| 🟫 [Dragonwell](https://dragonwell-jdk.io/) | 8–24 | `alibaba/dragonwell` | `ghcr.io/whitefreezing/java:dragonwell-21`, etc. |
-| 🟩 [BellSoft Full](https://bell-sw.com/) | 8–24 | `bellsoft/liberica-full` | `ghcr.io/whitefreezing/java:bellsoft-21`, etc. |
-| 🟦 [GraalCE](https://www.graalvm.org/) | 8–24 | `graalvm/graalce` | `ghcr.io/whitefreezing/java:graalce-21`, etc. |
-| 🟨 [GraalJDK](https://www.graalvm.org/) | 8–24 | `graalvm/graaljdk` | `ghcr.io/whitefreezing/java:graaljdk-21`, etc. |
-| ⚫ [OpenJ9 Rocky 21](https://adoptopenjdk.net/) | 8–24 | `adoptopenjdk/openj9` | `ghcr.io/whitefreezing/java:openj9_21-rocky-21`, etc. |
-| 🟤 [Shipilev Rocky 24](https://shipilev.net/) | 8–24 | `shipilev/openjdk` | `ghcr.io/whitefreezing/java:shipilev/24-rocky-21`, etc. |
+| Distribution                                           | Java Versions | Base Image                         | 🏷️ Tags                                                      |
+| ------------------------------------------------------ | ------------- | ---------------------------------- | ------------------------------------------------------------- |
+| 🏷️ [Adoptium (Eclipse Temurin)](https://adoptium.net) | 8–23          | `eclipse-temurin`                  | `ghcr.io/whitefreezing/java:adoptium-8`, …, `adoptium-23`     |
+| 🔵 [Zulu (Azul)](https://www.azul.com)                 | 8–23          | `azul/zulu-openjdk-debian`         | `ghcr.io/whitefreezing/java:zulu-8`, …, `zulu-23`             |
+| 🟨 [Amazon Corretto](https://aws.amazon.com/corretto/) | 8–23          | `amazoncorretto`                   | `ghcr.io/whitefreezing/java:corretto-8`, …, `corretto-23`     |
+| 🌿 [Liberica (BellSoft)](https://bell-sw.com)          | 8–23          | `bellsoft/liberica-openjdk-debian` | `ghcr.io/whitefreezing/java:liberica-8`, …, `liberica-23`     |
+| 🟪 [GraalVM](https://www.graalvm.org/)                 | 11–23         | `ghcr.io/graalvm/graalvm-ce`       | `ghcr.io/whitefreezing/java:graalvm-11`, …, `graalvm-23`      |
+| 🟥 [SAPMachine](https://sap.github.io/SapMachine/)     | 8–23          | `sapmachine`                       | `ghcr.io/whitefreezing/java:sapmachine-8`, …, `sapmachine-23` |
+| 🟫 [Dragonwell](https://dragonwell-jdk.io/)            | 8–21          | `alibaba/dragonwell`               | `ghcr.io/whitefreezing/java:dragonwell-8`, …, `dragonwell-21` |
+| 🟩 [BellSoft Full](https://bell-sw.com/)               | 8–23          | `bellsoft/liberica-full`           | `ghcr.io/whitefreezing/java:bellsoft-8`, …, `bellsoft-23`     |
+| 🟦 [GraalCE](https://www.graalvm.org/)                 | 11–23         | `ghcr.io/graalvm/graalce`          | `ghcr.io/whitefreezing/java:graalce-11`, …, `graalce-23`      |
+| 🟨 [GraalJDK](https://www.graalvm.org/)                | 11–23         | `ghcr.io/graalvm/graaljdk`         | `ghcr.io/whitefreezing/java:graaljdk-11`, …, `graaljdk-23`    |
+| ⚫ [OpenJ9 Rocky 21](https://adoptopenjdk.net/)         | 8–23          | `adoptopenjdk/openj9`              | `ghcr.io/whitefreezing/java:openj9_21-8`, …, `openj9_21-23`   |
+| 🟤 [Shipilev Rocky 24](https://shipilev.net/)          | 8–23          | `shipilev/openjdk`                 | `ghcr.io/whitefreezing/java:shipilev-8`, …, `shipilev-23`     |
 
 > 💡 **All images are built using official upstream images and are tagged consistently.**
 
@@ -39,101 +39,83 @@ Dockers/
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── zulu/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── corretto/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── temurin/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── liberica/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── graalvm/
-│   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── sapmachine/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── dragonwell/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 21/Dockerfile
 ├── bellsoft/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── graalce/
-│   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── graaljdk/
-│   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 ├── openj9_21-rocky/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
 │   ├── 21/Dockerfile
 │   ├── 22/Dockerfile
-│   ├── 23/Dockerfile
-│   └── 24/Dockerfile
+│   └── 23/Dockerfile
 └── shipilev/24-rocky/
     ├── 8/Dockerfile
     ├── 11/Dockerfile
     ├── 17/Dockerfile
     ├── 21/Dockerfile
     ├── 22/Dockerfile
-    ├── 23/Dockerfile
-    └── 24/Dockerfile
+    └── 23/Dockerfile

@@ -1,4 +1,4 @@
-FROM sapmachine:11-jdk-ubuntu
+FROM sapmachine:11-jdk-headless-ubuntu
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

@@ -1,4 +1,4 @@
-FROM alibaba/dragonwell:24-jdk-ubuntu
+FROM ibm-semeru-runtimes:open-22-jdk
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

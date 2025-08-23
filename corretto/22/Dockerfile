@@ -1,4 +1,4 @@
-FROM amazoncorretto:22-jdk-debian
+FROM amazoncorretto:22-al2
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
