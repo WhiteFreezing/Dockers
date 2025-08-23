@@ -6,6 +6,7 @@ Thumbs.db
 .bashrc
 .bash_logout
 .profile
+.bashrc.original
 dockerfiles.sh
 build.sh
 .config
