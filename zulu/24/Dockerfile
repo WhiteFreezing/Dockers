@@ -1,4 +1,4 @@
-FROM amazoncorretto:21
+FROM azul/zulu-openjdk:24-jdk-focal
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

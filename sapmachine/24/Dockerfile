@@ -1,4 +1,4 @@
-FROM amazoncorretto:21
+FROM sapmachine:24-jdk-headless-ubuntu
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

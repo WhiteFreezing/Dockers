@@ -1,4 +1,4 @@
-FROM amazoncorretto:8-al2
+FROM amazoncorretto:8
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
