@@ -1,4 +1,4 @@
-FROM azul/zulu:8-jdk-focal
+FROM azul/zulu:8
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
