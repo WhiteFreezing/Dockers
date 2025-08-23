@@ -1,4 +1,4 @@
-FROM graalvm/graalce:11
+FROM ghcr.io/graalvm/graalce:11-jdk-ubuntu
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

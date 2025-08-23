@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openj9:17-jdk-rocky
+FROM shipilev/openjdk:22-jdk-ubuntu
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

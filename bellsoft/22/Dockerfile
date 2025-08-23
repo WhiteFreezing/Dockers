@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-full:22
+FROM bellsoft/liberica-full:22-debian
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

@@ -1,4 +1,4 @@
-FROM azul/zulu-openjdk:24
+FROM azul/zulu-openjdk-debian:24
 
 LABEL       author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL       org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
