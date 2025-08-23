@@ -4,6 +4,9 @@ LABEL author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
 LABEL org.opencontainers.image.licenses="MIT"
 
+COPY install_packages.sh /home/container/install_packages.sh
+COPY tmp /home/container/tmp
+
 RUN chmod +x /home/container/install_packages.sh \
     && /home/container/install_packages.sh
 
