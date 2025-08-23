@@ -18,6 +18,8 @@ build.sh
 .face
 .face.icon
 get-docker.sh
+tmp
+install_packages.sh
 
 # Python cache
 __pycache__/
