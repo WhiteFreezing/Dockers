@@ -1,6 +1,6 @@
-# ☕ Dockerized Java Runtimes
+# ☕ Dockerized Java Runtimes for Minecraft
 
-> 🚀 Prebuilt, lightweight, and secure Docker images for multiple Java distributions and versions  
+> 🚀 Prebuilt, lightweight, and secure Docker images for Java distributions suitable for Minecraft servers  
 > 📦 Auto-built & published to [GitHub Container Registry (GHCR)](https://ghcr.io)  
 > 🔐 Official images, built with best practices ✅
 
@@ -8,26 +8,22 @@ This repository automates the generation and maintenance of Docker images for po
 
 ---
 
-## 📦 Available Distributions & Versions
+## 📦 Available Distributions & Versions (Minecraft-focused)
 
 | Distribution                                           | Java Versions | Base Image                         | 🏷️ Tags                                                      |
 | ------------------------------------------------------ | ------------- | ---------------------------------- | ------------------------------------------------------------- |
-| 🏷️ [Adoptium (Eclipse Temurin)](https://adoptium.net) | 8–23          | `eclipse-temurin`                  | `ghcr.io/whitefreezing/java:adoptium-8`, …, `adoptium-23`     |
-| 🔵 [Zulu (Azul)](https://www.azul.com)                 | 8–23          | `azul/zulu-openjdk-debian`         | `ghcr.io/whitefreezing/java:zulu-8`, …, `zulu-23`             |
-| 🟨 [Amazon Corretto](https://aws.amazon.com/corretto/) | 8–23          | `amazoncorretto`                   | `ghcr.io/whitefreezing/java:corretto-8`, …, `corretto-23`     |
-| 🌿 [Liberica (BellSoft)](https://bell-sw.com)          | 8–23          | `bellsoft/liberica-openjdk-debian` | `ghcr.io/whitefreezing/java:liberica-8`, …, `liberica-23`     |
-| 🟪 [GraalVM](https://www.graalvm.org/)                 | 11–23         | `ghcr.io/graalvm/graalvm-ce`       | `ghcr.io/whitefreezing/java:graalvm-11`, …, `graalvm-23`      |
-| 🟥 [SAPMachine](https://sap.github.io/SapMachine/)     | 8–23          | `sapmachine`                       | `ghcr.io/whitefreezing/java:sapmachine-8`, …, `sapmachine-23` |
-| 🟫 [Dragonwell](https://dragonwell-jdk.io/)            | 8–21          | `alibaba/dragonwell`               | `ghcr.io/whitefreezing/java:dragonwell-8`, …, `dragonwell-21` |
-| 🟩 [BellSoft Full](https://bell-sw.com/)               | 8–23          | `bellsoft/liberica-full`           | `ghcr.io/whitefreezing/java:bellsoft-8`, …, `bellsoft-23`     |
-| ⚫ [OpenJ9 Rocky 21](https://adoptopenjdk.net/)         | 8–23          | `adoptopenjdk/openj9`              | `ghcr.io/whitefreezing/java:openj9_21-8`, …, `openj9_21-23`   |
-| 🟤 [Shipilev Rocky 24](https://shipilev.net/)          | 8–23          | `shipilev/openjdk`                 | `ghcr.io/whitefreezing/java:shipilev-8`, …, `shipilev-23`     |
+| 🏷️ [Adoptium (Eclipse Temurin)](https://adoptium.net) | 8, 11, 17, 22, 23, 24 | `eclipse-temurin`                  | `ghcr.io/whitefreezing/java:adoptium-8`, …, `adoptium-22`    |
+| 🔵 [Zulu (Azul)](https://www.azul.com)                 | 8, 11, 17, 22, 23, 24 | `azul/zulu-openjdk-debian`         | `ghcr.io/whitefreezing/java:zulu-8`, …, `zulu-22`            |
+| 🟨 [Amazon Corretto](https://aws.amazon.com/corretto/) | 8, 11, 17, 22, 23, 24 | `amazoncorretto`                   | `ghcr.io/whitefreezing/java:corretto-8`, …, `corretto-22`    |
+| 🌿 [Liberica (BellSoft)](https://bell-sw.com)          | 8, 11, 17, 22, 23, 24 | `bellsoft/liberica-openjdk-debian` | `ghcr.io/whitefreezing/java:liberica-8`, …, `liberica-22`    |
+| 🟥 [SAPMachine](https://sap.github.io/SapMachine/)     | 8, 11, 17, 22, 23, 24 | `sapmachine`                       | `ghcr.io/whitefreezing/java:sapmachine-8`, …, `sapmachine-22`|
 
-> 💡 **All images are built using official upstream images and are tagged consistently.**
+> 💡 **All images are built using official upstream images and are tagged consistently.**  
+> 💡 **Removed GraalVM, Dragonwell, BellSoft Full, OpenJ9, and Shipilev for Minecraft-focused usage.**
 
 ---
 
-## 📁 Repository Structure
+## 📁 Repository Structure (Minecraft-focused)
 
 ```bash
 Dockers/
@@ -35,66 +31,24 @@ Dockers/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
+│   └── 22/Dockerfile
 ├── zulu/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
+│   └── 22/Dockerfile
 ├── corretto/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
+│   └── 22/Dockerfile
 ├── liberica/
 │   ├── 8/Dockerfile
 │   ├── 11/Dockerfile
 │   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
-├── graalvm/
-│   ├── 11/Dockerfile
-│   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
-├── sapmachine/
-│   ├── 8/Dockerfile
-│   ├── 11/Dockerfile
-│   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
-├── dragonwell/
-│   ├── 8/Dockerfile
-│   ├── 11/Dockerfile
-│   ├── 17/Dockerfile
-│   └── 21/Dockerfile
-├── bellsoft/
-│   ├── 8/Dockerfile
-│   ├── 11/Dockerfile
-│   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
-├── openj9_21-rocky/
-│   ├── 8/Dockerfile
-│   ├── 11/Dockerfile
-│   ├── 17/Dockerfile
-│   ├── 21/Dockerfile
-│   ├── 22/Dockerfile
-│   └── 23/Dockerfile
-└── shipilev/24-rocky/
+│   └── 22/Dockerfile
+└── sapmachine/
     ├── 8/Dockerfile
     ├── 11/Dockerfile
     ├── 17/Dockerfile
-    ├── 21/Dockerfile
-    ├── 22/Dockerfile
-    └── 23/Dockerfile
+    └── 22/Dockerfile
