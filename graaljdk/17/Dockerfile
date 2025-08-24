@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/jdk:17-ol9
+FROM ghcr.io/graalvm/jdk-community:17
 
 LABEL author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

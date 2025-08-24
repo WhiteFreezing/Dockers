@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/graalvm-ce:11-ol8
+FROM ghcr.io/graalvm/graalvm-ce:ol8-java11
 
 LABEL author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"

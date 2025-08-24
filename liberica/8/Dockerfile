@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-debian:8-jdk
+FROM container-registry.bell-sw.com/library/liberica-openjdk-debian:8
 
 LABEL author="whitefreezing_" maintainer="whitefreezing@gmail.com"
 LABEL org.opencontainers.image.source="https://github.com/WhiteFreezing/Dockers"
